@@ -1,0 +1,78 @@
+# Created 2018-02-23 Fri 16:20
+#+TITLE: 
+#+AUTHOR: Zhenguo Yin
+* ARM CertiKOS
+** Installation
+*** tftp install
+**** PC
+#+BEGIN_SRC
+  sudo apt-get install xinetd tftp tftpd
+  sudo service xinetd.d stop
+  sudo emacs /etc/xinetd.d/tftp
+#+END_SRC
+edit tftp config file
+#+BEGIN_SRC
+  service tftp{
+    socket_type = dgram
+    protocol = udp
+    wait = yes
+    user = root
+    server = /usr/sbin/in.tftpd
+    server_args = -s ${YOUR_TFTP_DIR}
+    disable = no
+    per_source = 11
+    cps = 100 2
+    flags = IPv4
+  }
+#+END_SRC
+#+BEGIN_SRC
+  sudo service xinetd.d restart
+#+END_SRC
+Remember to add tftp path to your .bashrc file, like
+#+BEGIN_SRC
+  export tftp_path="${YOUR_TFTP_DIR}"
+#+END_SRC
+**** Board
+U-boot Env variables modified
+#+BEGIN_SRC
+  setenv ipaddr ${BOARD_IP_ADDR}
+  setenv serverip ${PC_IP_ADDR}
+  setenv gatewayip ${GATEWAY}
+  setenv tftp_path '${PC_IP_ADDR}:'  //remember adding quote mark and colon
+  saveenv
+  
+  setenv script_addr ${MEM_ADDR}
+  setenv load_script 'tftp boot $script_addr $tftp_path/tftp.img'
+  setenv boot_script 'run load_script; source $scipt_addr'
+  setenv bootcmd 'run boot_scipt'
+  saveenv
+  
+  //Example Config
+  setenv ipaddr 0.0.0.124
+  setenv serverip 0.0.0.123
+  setenv gatewayip 0.0.0.1
+  setenv tftp_path '0.0.0.123:'
+  saveenv
+  setenv script_addr 0x20000000
+  setenv load_script 'tftp boot $script_addr $tftp_path/tftp.img'
+  setenv boot_script 'run load_script; source $scipt_addr'
+  setenv bootcmd 'run boot_scipt'
+  saveenv
+#+END_SRC
+
+*** CertiKOS Compile
+**** Toolchain
+Name:gcc-linaro-4.9-2016.02-x86_64_arm-eabi
+
+Download: [[https://releases.linaro.org/components/toolchain/binaries/4.9-2016.02/arm-eabi/]]
+
+*** U-boot
+**** pi3
+#+BEGIN_SRC
+  git clone git://git.denx.de/u-boot.git
+  make rpi_3_32b_defconfig
+  export CROSS_COMPILE=arm-eabi-
+  make -j16
+#+END_SRC
+**** tk1
+
