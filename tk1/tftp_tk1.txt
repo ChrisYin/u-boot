@@ -1,0 +1,25 @@
+#CERTIKOS
+tftpboot 0xfa000000 $tftp_path/tk1/img/uImage_ckos
+tftpboot 0x81000000 $tftp_path/tk1/img/zImage
+#tftpboot 0x81000000 $tftp_path/tk1/img/helloworld.bin
+tftpboot 0x82000000 $tftp_path/tk1/img/tegra124-jetson_tk1-pm375-000-c00-00.dtb
+bootm 0xfa000000 - 0x82000000
+
+#DUAL with RTOS
+#tftpboot 0xfe000000 $tftp_path/uImage_0217_removed_msg
+#tftpboot 0x81000000 $tftp_path/zImage
+#tftpboot 0x82000000 $tftp_path/tegra124-jetson_tk1-pm375-000-c00-00.dtb
+#tftpboot 0xfa000000 $tftp_path/hello_gtable_tk1_sender.bin
+#tftpboot 0xe0000000 $tftp_path/freeRTOS-tk1.bin
+#tftpboot 0x83000000 $tftp_path/freeRTOS-tk1.bin
+#tftpboot 0x81000000 $tftp_path/hello_world_1.bin
+#tftpboot 0xe0000000 $tftp_path/hello_world_1.bin
+#tftpboot 0xd0000000 $tftp_path/freeRTOS-tk1.bin
+#tftpboot 0xa0000000 $tftp_path/freeRTOS-tk1.bin
+#tftpboot 0x80000000 $tftp_path/freeRTOS-tk1.bin
+#bootm 0xfe000000 - 0x82000000
+#bootm 0xff000000
+#ftpboot 0x83000000 $tftp_path/uImage
+#bootm 0x83000000
+#go 0x83000000
+
