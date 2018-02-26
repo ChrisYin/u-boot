@@ -1,9 +1,18 @@
 #CERTIKOS-PI3
-tftpboot	0x20000000  $tftp_path/pi3/img/uImage_ckos
+
+##Certikos with Guest Kernel
+#tftpboot	0x20000000  $tftp_path/pi3/img/uImage_ckos
 tftpboot	0x10000000  $tftp_path/pi3/img/zImage
 #tftpboot	0x10000000  $tftp_path/pi3/img/helloworld.bin
 tftpboot	0x12000000  $tftp_path/pi3/img/bcm2710-rpi-3-b.dtb
-bootm 0x20000000 - 0x12000000
+#bootm 0x20000000 - 0x12000000
 
+##Boot Raspbian
+#tftpboot	0x10000000  $tftp_path/pi3/img/zImage
+#tftpboot	0x12000000  $tftp_path/pi3/img/bcm2710-rpi-3-b.dtb
+#setenv bootargs 8250.nr_uarts=1 root=/dev/mmcblk0p2 rootwait console=ttyS0,115200
+#bootz 0x10000000 - 0x12000000
+
+##Helloworld Program Test
 #tftpboot	0x10000000  $tftp_path/pi/img/helloworld.bin
 #go 0x10000000
