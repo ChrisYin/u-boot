@@ -77,7 +77,8 @@
 
 /* Console UART */
 #ifdef CONFIG_BCM2837
-#define CONFIG_BCM283X_MU_SERIAL
+/* #define CONFIG_BCM283X_MU_SERIAL */
+#define CONFIG_PL01X_SERIAL
 #else
 #define CONFIG_PL01X_SERIAL
 #endif
