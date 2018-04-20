@@ -1,20 +1,30 @@
 #CERTIKOS-PI3
 
 ##Certikos with Guest Kernel
-setenv bootargs 8250.nr_uarts=1 root=/dev/mmcblk0p2 rootwait console=ttyS0,115200
-tftpboot	0x20000000  $tftp_path/pi3/img/uImage_ckos
-tftpboot	0x10000000  $tftp_path/pi3/img/zImage
+setenv bootargs earlyprintk 8250.nr_uarts=1 root=/dev/mmcblk0p2 console=ttyAMA0,115200 rootwait fsck.repair=yes
+fdt addr $fdt_addr
+fdt move $fdt_addr 0x12000000
+tftpboot 0x10000000 $tftp_path/pi3/img/zImage
+tftpboot 0x20000000 $tftp_path/pi3/img/uImage_ckos
+
 #tftpboot	0x10000000  $tftp_path/pi3/img/guest_test.bin
 #tftpboot	0x10000000  $tftp_path/pi3/img/helloworld.bin
-tftpboot	0x12000000  $tftp_path/pi3/img/bcm2710-rpi-3-b.dtb
+#tftpboot	0x12000000  $tftp_path/pi3/img/bcm2710-rpi-3-b.dtb
+
 bootm 0x20000000 - 0x12000000
 
 ##Boot Raspbian
-#tftpboot	0x10000000  $tftp_path/pi3/img/zImage
-#tftpboot	0x12000000  $tftp_path/pi3/img/bcm2710-rpi-3-b.dtb
-#setenv bootargs earlyprintk 8250.nr_uarts=1 root=/dev/mmcblk0p2 rootwait console=ttyS0,115200
+#setenv bootargs earlyprintk 8250.nr_uarts=1 root=/dev/mmcblk0p2 console=ttyAMA0,115200 rootwait fsck.repair=yes
+#fdt addr $fdt_addr
+#fdt move $fdt_addr 0x12000000
+#tftpboot 0x10000000 $tftp_path/pi3/img/zImage
 #bootz 0x10000000 - 0x12000000
 
 ##Helloworld Program Test
 #tftpboot	0x10000000  $tftp_path/pi3/img/helloworld.bin
+#tftpboot	0x10000000  $tftp_path/pi3/img/guest_test.bin
 #go 0x10000000
+
+##Ring0 Test
+#tftpboot	0x20000000  $tftp_path/pi3/img/ring0.bin
+#go 		0x20000000

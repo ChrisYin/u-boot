@@ -1,9 +1,16 @@
 #CERTIKOS
-tftpboot 0xfa000000 $tftp_path/tk1/img/uImage_ckos
+setenv bootargs console=ttyS0,115200n8 console=tty1 no_console_suspend=1  pmuboard=0x0177:0x0000:0x02:0x43:0x00 vpr=151M@3945M tsec=32M@3913M debug_uartport=lsport,3 power_supply=Adapter android.kerneltype=normal tegra_fbmem=32899072@0xad012000 board_info=0x0177:0x0000:0x02:0x43:0x00 root=/dev/mmcblk0p1 rw rootwait tegraboot=sdmmc gpt
+tftpboot 0xda000000 $tftp_path/tk1/img/uImage_ckos
 tftpboot 0x81000000 $tftp_path/tk1/img/zImage
 #tftpboot 0x81000000 $tftp_path/tk1/img/helloworld.bin
 tftpboot 0x82000000 $tftp_path/tk1/img/tegra124-jetson_tk1-pm375-000-c00-00.dtb
-bootm 0xfa000000 - 0x82000000
+bootm 0xda000000 - 0x82000000
+
+#Linux
+#tftpboot 0x81000000 $tftp_path/tk1/img/zImage
+#tftpboot 0x82000000 $tftp_path/tk1/img/tegra124-jetson_tk1-pm375-000-c00-00.dtb
+#setenv bootargs console=ttyS0,115200n8 console=tty1 no_console_suspend=1  pmuboard=0x0177:0x0000:0x02:0x43:0x00 vpr=151M@3945M tsec=32M@3913M debug_uartport=lsport,3 power_supply=Adapter android.kerneltype=normal tegra_fbmem=32899072@0xad012000 board_info=0x0177:0x0000:0x02:0x43:0x00 root=/dev/mmcblk0p1 rw rootwait tegraboot=sdmmc gpt
+#bootz 0x81000000 - 0x82000000
 
 #DUAL with RTOS
 #tftpboot 0xfe000000 $tftp_path/uImage_0217_removed_msg
