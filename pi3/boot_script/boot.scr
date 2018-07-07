@@ -1,4 +1,4 @@
-fatload mmc 0:1 20000000 kernel.bin
-fatload mmc 0:1 10000000 helloworld.bin
-fatload mmc 0:1 12000000 bcm2710-rpi-3-b.dtb
+fdt addr $fdt_addr
+fdt move $fdt_addr 0x12000000
+fatload mmc 0:1 20000000 uImage_ckos
 bootm 0x20000000 - 0x12000000
