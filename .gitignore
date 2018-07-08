@@ -5,3 +5,5 @@
 *.elf
 *.backup
 vmlinux
+tftp_pi3.img
+tftp_tk1.img

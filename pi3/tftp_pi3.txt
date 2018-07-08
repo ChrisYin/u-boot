@@ -1,10 +1,10 @@
 #CERTIKOS-PI3
 
 ##Certikos with Guest Kernel
-setenv bootargs earlyprintk 8250.nr_uarts=1 root=/dev/mmcblk0p2 console=ttyAMA0,115200 rootwait fsck.repair=yes
+#setenv bootargs earlyprintk 8250.nr_uarts=1 root=/dev/mmcblk0p2 console=ttyAMA0,115200 rootwait fsck.repair=yes
 fdt addr $fdt_addr
 fdt move $fdt_addr 0x12000000
-tftpboot 0x10000000 $tftp_path/pi3/img/zImage
+#tftpboot 0x10000000 $tftp_path/pi3/img/zImage
 tftpboot 0x20000000 $tftp_path/pi3/img/uImage_ckos
 
 #tftpboot	0x10000000  $tftp_path/pi3/img/guest_test.bin
