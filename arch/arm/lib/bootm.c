@@ -313,11 +313,11 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 {
 #ifdef CONFIG_ARM64
 	void (*kernel_entry)(void *fdt_addr, void *res0, void *res1,
-			void *res2);
+			     void *res2);
 	int fake = (flag & BOOTM_STATE_OS_FAKE_GO);
 
 	kernel_entry = (void (*)(void *fdt_addr, void *res0, void *res1,
-				void *res2))images->ep;
+				 void *res2))images->ep;
 
 	debug("## Transferring control to Linux (at address %lx)...\n",
 		(ulong) kernel_entry);
@@ -352,11 +352,12 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 #else
 	unsigned long machid = gd->bd->bi_arch_number;
 	char *s;
-	void (*kernel_entry)(int zero, int arch, uint params);
+	void (*kernel_entry)(int zero, int arch, uint params0, uint params1);
 	unsigned long r2;
+	unsigned long r3;
 	int fake = (flag & BOOTM_STATE_OS_FAKE_GO);
 
-	kernel_entry = (void (*)(int, int, uint))images->ep;
+	kernel_entry = (void (*)(int, int, uint, uint))images->ep;
 #ifdef CONFIG_CPU_V7M
 	ulong addr = (ulong)kernel_entry | 1;
 	kernel_entry = (void *)addr;
@@ -380,15 +381,21 @@ static void boot_jump_linux(bootm_headers_t *images, int flag)
 	else
 		r2 = gd->bd->bi_boot_params;
 
+	r3 = (unsigned long)images->ft_len;
+	printf("parameter:\n");
+	printf("r1[machine id]: %lu\n", machid);
+	printf("r2[fdt addr]: %lx\n", r2);
+	printf("r3[fdt size]: %lx\n", r3);
+	
 	if (!fake) {
 #ifdef CONFIG_ARMV7_NONSEC
 		if (armv7_boot_nonsec()) {
 			armv7_init_nonsec();
 			secure_ram_addr(_do_nonsec_entry)(kernel_entry,
-							  0, machid, r2);
+							  0, machid, r2, r3);
 		} else
 #endif
-			kernel_entry(0, machid, r2);
+		  kernel_entry(0, machid, r2, r3);
 	}
 #endif
 }
